@@ -5,7 +5,7 @@ using UnityEngine;
 public class missileCtrl : MonoBehaviour
 {
     // 리지드바디, 타겟 선언
-    public Rigidbody rigidbody;
+    private Rigidbody rigidbody;
     public Transform target;
 
     // 기본 속도와 최고 속도
@@ -13,7 +13,7 @@ public class missileCtrl : MonoBehaviour
     public float maxSpeed = 50.0f;
 
     // 타겟 검색을 위한 레이어 마스크
-    [SerializeField] LayerMask layerMask = 0;
+    //[SerializeField] LayerMask layerMask = 0;
 
     void Start()
     {
@@ -62,12 +62,12 @@ public class missileCtrl : MonoBehaviour
     {
         // 미사일 생성 0.5초 후 추격
         yield return new WaitForSeconds(0.5f);
-
         SearchTarget();
     }
 
     private void OnCollisionEnter(Collision coll)
     {
+        // 플레이어와 충돌할 경우
         if (coll.transform.CompareTag("Player"))
         {
             Destroy(gameObject);
@@ -76,6 +76,7 @@ public class missileCtrl : MonoBehaviour
     }
     private void OnTriggerEnter(Collider coll)
     {
+        //쉴드와 충돌할 경우
         if (coll.transform.CompareTag("Shield"))
         {
             Destroy(gameObject);

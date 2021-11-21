@@ -14,6 +14,9 @@ public class PlayerCtrl : MonoBehaviour
     private Animator animator;
 
     private bool bJumping = false;
+
+    // 플레이어가 미사일에 맞을 경우 이동을 제한하는 bool 변수
+    private bool isMoveAble = true;
     void Start()
     {
         characterRigidbody = GetComponent<Rigidbody>();
@@ -27,14 +30,16 @@ public class PlayerCtrl : MonoBehaviour
         float MouseX = Input.GetAxis("Mouse X");
         // -1 ~ 1
         animator.SetFloat("Vertical", inputZ);
-        animator.SetFloat("Horizontal", inputX);  
-     
-        MoveTo(new Vector3(inputX, 0, inputZ));
+        animator.SetFloat("Horizontal", inputX);
+        if (isMoveAble)
+        {
+            MoveTo(new Vector3(inputX, 0, inputZ));
 
-        transform.Translate(moveDir * maxSpeed * Time.deltaTime, Space.World);
+            transform.Translate(moveDir * maxSpeed * Time.deltaTime, Space.World);
 
-        RotateTo();
-        Jump();
+            RotateTo();
+            Jump();
+        }
     }
     private void MoveTo(Vector3 direction)
     {
@@ -68,5 +73,19 @@ public class PlayerCtrl : MonoBehaviour
             bJumping = false;
             animator.SetBool("bJumping", false);
         }
+
+        if (collision.gameObject.CompareTag("Missile"))
+        {
+            // 미사일에 맞으면 2초간 이동 불가
+            characterRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+            isMoveAble = false;
+            Invoke("moveAble", 2.0f);
+        }
+    }
+
+    public void moveAble()
+    {
+        // 이동 불가 해제
+        isMoveAble = true;
     }
 }
