@@ -5,9 +5,11 @@ using UnityEngine;
 public class itemBoxCtrl : MonoBehaviour
 {
     float randomItemNum;
+    public GameObject getEffect;
 
     void Update()
     {
+        // 아이템 획득을 위한 난수 생성
         randomItemNum = Random.Range(0, 10);
     }
 
@@ -16,14 +18,17 @@ public class itemBoxCtrl : MonoBehaviour
         // 플레이어와 충돌할 경우
         if (coll.transform.CompareTag("Player"))
         {
-            //StartCoroutine(playerGetItem());
-            Debug.Log("Box Off");
+            // 상자 제거 이펙트 생성
+            var getInstance = Instantiate(getEffect, transform.position, transform.rotation);
+            var getParticle = getInstance.GetComponent<ParticleSystem>();
+            Destroy(getInstance, getParticle.main.duration);
+
+            //상자 비활성화 후 5초 뒤 재생성
             gameObject.SetActive(false);
             Invoke("boxReset", 5.0f);
-            Debug.Log("Hit Player Box");
             useItem useItem = GameObject.Find("Player").GetComponent<useItem>();
 
-            // 플레이어가 아이템을 보유하지 않은 경우
+            // 플레이어가 아이템을 보유하지 않았을 때만 아이템을 얻게 함
             if (!useItem.isPlayerGetItem)
             {
                 switch (randomItemNum)
@@ -58,18 +63,9 @@ public class itemBoxCtrl : MonoBehaviour
         }
     }
 
-    //IEnumerator playerGetItem()
-    //{
-    //    Debug.Log("Box Off");
-    //    gameObject.SetActive(false);
-    //    yield return new WaitForSeconds(5.0f);
-    //    gameObject.SetActive(true);
-    //    Debug.Log("Box On");
-    //}
-
     void boxReset()
     {
+        // 아이템 박스 재생성
         gameObject.SetActive(true);
-        Debug.Log("Box On");
     }
 }

@@ -7,16 +7,19 @@ public class missileCtrl : MonoBehaviour
     // 리지드바디, 타겟 선언
     private Rigidbody rigidbody;
     public Transform target;
+    public GameObject hitEffect;
 
     // 기본 속도와 최고 속도
     public float speed = 5.0f;
     public float maxSpeed = 50.0f;
+
 
     // 타겟 검색을 위한 레이어 마스크
     //[SerializeField] LayerMask layerMask = 0;
 
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         StartCoroutine(ShootDelay());
     }
 
@@ -24,7 +27,7 @@ public class missileCtrl : MonoBehaviour
     {
         if (target != null)
         {
-            // 미사일 속도가 최고 속도가 아니면
+            // 미사일 속도가 최고 속도가 아니면 가속
             if (speed <= maxSpeed)
             {
                 speed += speed * Time.deltaTime;
@@ -70,17 +73,24 @@ public class missileCtrl : MonoBehaviour
         // 플레이어와 충돌할 경우
         if (coll.transform.CompareTag("Player"))
         {
-            Destroy(gameObject);
-            Debug.Log("HitPlayer");
+            hitObjectDestroy();
         }
     }
     private void OnTriggerEnter(Collider coll)
     {
-        //쉴드와 충돌할 경우
+        // 쉴드와 충돌할 경우
         if (coll.transform.CompareTag("Shield"))
         {
-            Destroy(gameObject);
-            Debug.Log("HitShield");
+            hitObjectDestroy();
         }
+    }
+
+    public void hitObjectDestroy()
+    {
+        // 미사일 충돌 후 삭제 처리        
+        Destroy(gameObject);
+        var hitInstance = Instantiate(hitEffect, transform.position, transform.rotation);
+        var hitParticle = hitInstance.GetComponent<ParticleSystem>();
+        Destroy(hitInstance, hitParticle.main.duration);
     }
 }

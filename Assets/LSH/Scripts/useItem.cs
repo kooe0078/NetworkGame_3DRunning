@@ -7,6 +7,7 @@ public class useItem : MonoBehaviour
     public GameObject Missile;
     public GameObject Shield;
     public Transform MissileSpawnPos;
+    public GameObject boosterEffect;
 
     public bool isPlayerGetItem = false;
     public bool getMissile = false;
@@ -41,22 +42,23 @@ public class useItem : MonoBehaviour
     IEnumerator useShield()
     {
         // 쉴드 생성 후 2초 뒤 제거
-        Debug.Log("ShieldOn");
         Shield.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         Shield.SetActive(false);
-        Debug.Log("ShieldOff");
     }
 
     IEnumerator useBooster()
     {
         // 부스터 사용 후 3초 뒤 이동속도 복구
         PlayerCtrl playerCtrl = GameObject.Find("Player").GetComponent<PlayerCtrl>();
-        Debug.Log("BoosterOn");
         playerCtrl.maxSpeed *= 5.0f;
+        //부스터 사용 이펙트 생성
+        var boosterInstance = Instantiate(boosterEffect, transform.position, transform.rotation);
+        var boosterParticle = boosterInstance.GetComponent<ParticleSystem>();
+        Destroy(boosterInstance, boosterParticle.main.duration);
+
         yield return new WaitForSeconds(3.0f);
         playerCtrl.maxSpeed /= 5.0f;
-        Debug.Log("BoosterOff");
     }
 
     void playerItemReset()
