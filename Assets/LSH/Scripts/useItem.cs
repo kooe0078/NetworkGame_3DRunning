@@ -51,14 +51,14 @@ public class useItem : MonoBehaviour
     {
         // 부스터 사용 후 3초 뒤 이동속도 복구
         PlayerCtrl playerCtrl = GameObject.Find("Player").GetComponent<PlayerCtrl>();
-        playerCtrl.maxSpeed *= 5.0f;
+        playerCtrl.maxSpeed *= 2.0f;
         //부스터 사용 이펙트 생성
         var boosterInstance = Instantiate(boosterEffect, transform.position, transform.rotation);
         var boosterParticle = boosterInstance.GetComponent<ParticleSystem>();
         Destroy(boosterInstance, boosterParticle.main.duration);
 
         yield return new WaitForSeconds(3.0f);
-        playerCtrl.maxSpeed /= 5.0f;
+        playerCtrl.maxSpeed /= 2.0f;
     }
 
     void playerItemReset()
