@@ -16,7 +16,7 @@ public class CameraCtrl : MonoBehaviour
     public float smoothY;
     private float rotX = 0.0f;
     private float rotY = 0.0f;
-    // Start is called before the first frame update
+
     void Start()
     {
         Vector3 rot = transform.localRotation.eulerAngles;
@@ -24,10 +24,9 @@ public class CameraCtrl : MonoBehaviour
         rotX = rot.x;
         //커서 비활성화
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.visible = false;  
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
         float mouseX = Input.GetAxis("Mouse X");
@@ -46,8 +45,11 @@ public class CameraCtrl : MonoBehaviour
     }
     void CameraUpdater()
     {
-        Transform target = CameraFollowObj.transform;
-        float step = CameraMoveSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        if (CameraFollowObj)
+        {
+            Transform target = CameraFollowObj.transform;
+            float step = CameraMoveSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        }
     }
 }

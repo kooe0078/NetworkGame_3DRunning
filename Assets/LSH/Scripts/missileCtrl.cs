@@ -48,7 +48,9 @@ public class missileCtrl : MonoBehaviour
         //Collider[] coll = Physics.OverlapSphere(transform.position, 100.0f, layerMask);
 
         // 플레이어의 이름을 가진 오브젝트 추격
-        target = GameObject.Find("Player").transform;
+        target = GameObject.FindWithTag("Player").transform;
+
+        if (target)
 
         //if(coll.Length > 0)
         //{

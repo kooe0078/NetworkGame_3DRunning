@@ -9,7 +9,7 @@ public class returnSavePoint : MonoBehaviour
     void Start()
     {
         // 체크포인트가 없을 경우 초기 위치 설정
-        lastestCheckPoint = new Vector3(50, 1, 5);
+        lastestCheckPoint = new Vector3(0, 0, 0);
     }
 
     private void OnCollisionEnter(Collision collision)

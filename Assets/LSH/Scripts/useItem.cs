@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class useItem : MonoBehaviour
+public class useItem : PlayerCtrl
 {
     public GameObject Missile;
     public GameObject Shield;
@@ -20,8 +20,8 @@ public class useItem : MonoBehaviour
         {
             // 마우스 좌클릭으로 미사일 발사
             if (getMissile && Input.GetButtonDown("Fire1"))
-            {
-                Instantiate(Missile, MissileSpawnPos.position, MissileSpawnPos.rotation);
+            {                
+                playerUseMissile();  
                 playerItemReset();
             }
             // 마우스 우클릭으로 쉴드 생성
@@ -39,6 +39,12 @@ public class useItem : MonoBehaviour
         }
     }
 
+    public void useMssile()
+    {
+        // 미사일 생성
+        Instantiate(Missile, MissileSpawnPos.position, MissileSpawnPos.rotation);
+    }
+
     IEnumerator useShield()
     {
         // 쉴드 생성 후 2초 뒤 제거
@@ -50,7 +56,7 @@ public class useItem : MonoBehaviour
     IEnumerator useBooster()
     {
         // 부스터 사용 후 3초 뒤 이동속도 복구
-        PlayerCtrl playerCtrl = GameObject.Find("Player").GetComponent<PlayerCtrl>();
+        PlayerCtrl playerCtrl = GameObject.FindWithTag("Player").GetComponent<PlayerCtrl>();
         playerCtrl.maxSpeed *= 2.0f;
         //부스터 사용 이펙트 생성
         var boosterInstance = Instantiate(boosterEffect, transform.position, transform.rotation);

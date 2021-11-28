@@ -22,12 +22,11 @@ public class itemBoxCtrl : MonoBehaviour
             var getInstance = Instantiate(getEffect, transform.position, transform.rotation);
             var getParticle = getInstance.GetComponent<ParticleSystem>();
             Destroy(getInstance, getParticle.main.duration);
-
             //상자 비활성화 후 5초 뒤 재생성
             gameObject.SetActive(false);
-            Invoke("boxReset", 5.0f);
-            useItem useItem = GameObject.Find("Player").GetComponent<useItem>();
 
+            Invoke("boxReset", 5.0f);
+            useItem useItem = GameObject.FindWithTag("Player").GetComponent<useItem>();
             // 플레이어가 아이템을 보유하지 않았을 때만 아이템을 얻게 함
             if (!useItem.isPlayerGetItem)
             {
