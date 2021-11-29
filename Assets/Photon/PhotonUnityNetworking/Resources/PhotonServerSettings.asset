@@ -41,6 +41,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - ChatInfo
   - useMissileRPC
+  - useShieldRPC
+  - useBoosterRPC
+  - playerGetItemRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

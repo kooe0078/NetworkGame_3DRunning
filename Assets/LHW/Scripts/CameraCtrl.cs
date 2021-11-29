@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraCtrl : MonoBehaviour
 {
     public float CameraMoveSpeed = 120.0f;
-    public GameObject CameraFollowObj;
+    public Transform CameraFollowObj;
     //Vector3 FollowPos;
     public float clampAngle = 20.0f;
     public float InputSensitivity = 2.0f;

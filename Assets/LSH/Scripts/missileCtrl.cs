@@ -8,6 +8,7 @@ public class missileCtrl : MonoBehaviour
     private Rigidbody rigidbody;
     public Transform target;
     public GameObject hitEffect;
+    //public string owner = "";
 
     // 기본 속도와 최고 속도
     public float speed = 5.0f;
@@ -44,22 +45,24 @@ public class missileCtrl : MonoBehaviour
 
     public void SearchTarget()
     {
-        // 일정 범위 내 해당 레이어 마스크의 타겟 선정
-        //Collider[] coll = Physics.OverlapSphere(transform.position, 100.0f, layerMask);
+        // 플레이어의 태그를 가진 오브젝트 전체 검색
+        GameObject[] searchTarget = GameObject.FindGameObjectsWithTag("Player");
 
-        // 플레이어의 이름을 가진 오브젝트 추격
-        target = GameObject.FindWithTag("Player").transform;
-
-        if (target)
-
-        //if(coll.Length > 0)
-        //{
-        //    target = coll[Random.Range(0, coll.Length)].transform;
-        //}
+        for (int i = 0; i < searchTarget.Length; i++)
+        {
+            // 플레이어 캐릭터인지 아닌지 검사
+            if (searchTarget[i].GetComponent<PlayerCtrl>().photonView.IsMine == false)
+            {
+                target = searchTarget[i].transform;
+                Debug.Log(target);
+                break;
+            }
+        }
 
         if (target == null)
         {
             Destroy(gameObject);
+            Debug.Log("target null");
         }
     }
 

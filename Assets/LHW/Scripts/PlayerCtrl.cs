@@ -26,19 +26,25 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     // 플레이어의 위치 및 회전값 동기화를 위한 변수
     private Vector3 currPos;
     private Quaternion currRot;
-    private CameraCtrl camCtrl;
+    // 아이템 획득을 위한 난수 설정
+    float randomItemNum;
+    useItem useItem;
 
     void Start()
     {
         characterRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         pv = GetComponent<PhotonView>();
+        useItem = GetComponent<useItem>();
 
         pv.ObservedComponents[0] = this;
         cameraTransform = GameObject.Find("Main Camera").transform;
-        camCtrl = GameObject.Find("CameraBase").GetComponent<CameraCtrl>();
-        if(camCtrl && pv.IsMine)
-            camCtrl.CameraFollowObj= GameObject.Find("CamFollow");
+
+        if (pv.IsMine)
+        {
+            GameObject.Find("CameraBase").GetComponent<CameraCtrl>().CameraFollowObj
+                = transform.Find("CamFollow").gameObject.transform;
+        }
     }
 
     void Update()
@@ -65,22 +71,22 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
         {
             if (transform.position != currPos)
             {
-                animator.SetFloat("Vertical", inputZ);
-                animator.SetFloat("Horizontal", inputX);
-                MoveTo(new Vector3(inputX, 0, inputZ));
-                transform.Translate(moveDir * maxSpeed * Time.deltaTime, Space.World);
+                animator.SetFloat("Speed", 1.0f);
+                transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * maxSpeed);
             }
             else
             {
-                animator.SetFloat("Vertical", 0.0f) ;
-                animator.SetFloat("Horizontal", 0.0f);
+                animator.SetFloat("Speed", 0.0f);
             }
 
             if (transform.rotation != currRot)
             {
-                RotateTo();
-            }            
+                transform.rotation = Quaternion.Lerp(transform.rotation, currRot, Time.deltaTime * maxSpeed);
+            }
         }
+
+        // 아이템 획득을 위한 난수 생성
+        randomItemNum = Random.Range(0, 10);
     }
     private void MoveTo(Vector3 direction)
     {
@@ -118,9 +124,15 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
         if (collision.gameObject.CompareTag("Missile"))
         {
             // 미사일에 맞으면 2초간 이동 불가
-            characterRigidbody.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            characterRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
             isMoveAble = false;
             Invoke("moveAble", 2.0f);
+        }
+
+        if (collision.gameObject.CompareTag("ItemBox"))
+        {
+            if (pv.IsMine)
+                playerGetItem();
         }
     }
 
@@ -133,7 +145,7 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
-        {
+        {          
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(name);
@@ -152,17 +164,39 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
         GetComponent<PlayerCtrl>().playerName.text = this.name;
     }
 
-    public void playerUseMissile()
+    void playerGetItem()
     {
-        useItem _useItem = GetComponent<useItem>();
-        _useItem.useMssile();
-        pv.RPC("useMissileRPC", RpcTarget.Others);
-    }
-
-    [PunRPC]
-    void useMissileRPC()
-    {
-        useItem _useItem = GetComponent<useItem>();
-        _useItem.useMssile();
+        // 플레이어가 아이템을 보유하지 않았을 때만 아이템을 얻게 함
+        if (!useItem.isPlayerGetItem)
+        {
+            switch (randomItemNum)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    useItem.getBooster = true;
+                    Debug.Log("부스터 획득");
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    useItem.getMissile = true;
+                    Debug.Log("미사일 획득");
+                    break;
+                case 7:
+                case 8:
+                case 9:
+                    useItem.getShield = true;
+                    Debug.Log("쉴드 획득");
+                    break;
+                default:
+                    break;
+            }
+            // 플레이어가 아이템 보유중
+            useItem.isPlayerGetItem = true;
+        }
+        else
+            Debug.Log("플레이어는 아이템을 가지고 있으니 추가 아이템을 얻지 않습니다");
     }
 }

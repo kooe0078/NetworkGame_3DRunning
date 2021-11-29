@@ -9,7 +9,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PhotonInit : MonoBehaviourPunCallbacks
 {
-    // 싱글턴 패턴을 저굥ㅇ 해야 함
+    // 싱글턴 패턴을 적용 해야 함
     public static PhotonInit instance;
 
     public InputField playerInput;
@@ -179,7 +179,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         }
 
         GameObject tempPlayer = PhotonNetwork.Instantiate("Player",
-                                    new Vector3(0, 0, -10),
+                                    new Vector3(50, 1, 5),
                                     Quaternion.identity,
                                     0);
         tempPlayer.GetComponent<PlayerCtrl>().SetPlayerName(playerName);

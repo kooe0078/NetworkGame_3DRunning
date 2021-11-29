@@ -8,6 +8,7 @@ TagManager:
   - Shield
   - Missile
   - CheckPoint
+  - ItemBox
   layers:
   - Default
   - TransparentFX
