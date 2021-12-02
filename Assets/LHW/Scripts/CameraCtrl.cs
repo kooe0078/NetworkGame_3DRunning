@@ -23,8 +23,8 @@ public class CameraCtrl : MonoBehaviour
         rotY = rot.y;
         rotX = rot.x;
         //커서 비활성화
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;  
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;  
     }
 
     void LateUpdate()

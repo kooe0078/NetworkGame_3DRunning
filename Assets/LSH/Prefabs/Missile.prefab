@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4325521886848326}
   - component: {fileID: 198502135272650070}
   - component: {fileID: 199025361395989974}
-  - component: {fileID: 54306541025699842}
   - component: {fileID: 135603251481575800}
   - component: {fileID: 8713548592694599092}
   - component: {fileID: 8753758238653468005}
+  - component: {fileID: 7024980601764838170}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Missile
@@ -4889,22 +4889,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!54 &54306541025699842
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533846767962012}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
 --- !u!135 &135603251481575800
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4930,10 +4914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f708502ae5c3a494aaebfe327e399100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   hitEffect: {fileID: 1135403995393518, guid: 2147b7989f0c2e44a83009fdc4403fcd, type: 3}
-  missileSoundClip: {fileID: 8300000, guid: e3f70e734739f4383b83f2d521e34051, type: 3}
-  hitSoundClip: {fileID: 8300000, guid: 8773374b626b541e1b4eec4cefdbf1d9, type: 3}
   speed: 5
   maxSpeed: 50
 --- !u!82 &8753758238653468005
@@ -5032,6 +5013,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7024980601764838170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533846767962012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1571712001798040
 GameObject:
   m_ObjectHideFlags: 0

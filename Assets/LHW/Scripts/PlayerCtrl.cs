@@ -22,16 +22,18 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     private PhotonView pv;
     // 플레이어의 이름을 받아오는 변수
     public TextMesh playerName;
-    string name = "";
+    public string name = "";
     // 플레이어의 위치 및 회전값 동기화를 위한 변수
-    private Vector3 currPos;
+    public Vector3 currPos;
     private Quaternion currRot;
     // 아이템 획득을 위한 난수 설정
     float randomItemNum;
     useItem useItem;
-
+    private InGameManager ingameManager;
+    public bool bAttack = false;
     void Start()
     {
+        ingameManager = GameObject.Find("InGameManager").GetComponent<InGameManager>();
         characterRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         pv = GetComponent<PhotonView>();
@@ -48,46 +50,33 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     }
 
     void Update()
-    {
-        float inputX = Input.GetAxis("Horizontal");
-        float inputZ = Input.GetAxis("Vertical");
-        float MouseX = Input.GetAxis("Mouse X");
-        // -1 ~ 1
-        if (pv.IsMine)
+    {      
+        if (ingameManager && ingameManager.bGameStart)
         {
-            animator.SetFloat("Vertical", inputZ);
-            animator.SetFloat("Horizontal", inputX);
-            if (isMoveAble)
+            float inputX = Input.GetAxis("Horizontal");
+            float inputZ = Input.GetAxis("Vertical");
+            float MouseX = Input.GetAxis("Mouse X");
+            // -1 ~ 1
+            if (pv.IsMine)
             {
-                MoveTo(new Vector3(inputX, 0, inputZ));
+                animator.SetFloat("Vertical", inputZ);
+                animator.SetFloat("Horizontal", inputX);
+                if (isMoveAble)
+                {
+                    MoveTo(new Vector3(inputX, 0, inputZ));
 
-                transform.Translate(moveDir * maxSpeed * Time.deltaTime, Space.World);
+                    transform.Translate(moveDir * maxSpeed * Time.deltaTime, Space.World);
 
-                RotateTo();
-                Jump();
-            }
-        }
-        else if (!pv.IsMine)
-        {
-            if (transform.position != currPos)
-            {
-                animator.SetFloat("Speed", 1.0f);
-                transform.position = Vector3.Lerp(transform.position, currPos, Time.deltaTime * maxSpeed);
-            }
-            else
-            {
-                animator.SetFloat("Speed", 0.0f);
-            }
-
-            if (transform.rotation != currRot)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation, currRot, Time.deltaTime * maxSpeed);
+                    RotateTo();
+                    Jump();
+                }
             }
         }
 
         // 아이템 획득을 위한 난수 생성
         randomItemNum = Random.Range(0, 10);
     }
+
     private void MoveTo(Vector3 direction)
     {
         Vector3 moveis = cameraTransform.rotation * direction;
@@ -106,13 +95,19 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                bJumping = true;
-                animator.SetBool("bJumping", true);
-                characterRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                pv.RPC("JumpRPC", RpcTarget.All);
             }
-        }
-        
+        }        
     }
+
+    [PunRPC]
+    private void JumpRPC()
+    {
+        bJumping = true;
+        animator.SetBool("bJumping", true);
+        characterRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
@@ -123,10 +118,14 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
 
         if (collision.gameObject.CompareTag("Missile"))
         {
-            // 미사일에 맞으면 2초간 이동 불가
-            characterRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
-            isMoveAble = false;
-            Invoke("moveAble", 2.0f);
+            if (!bAttack)
+            {
+                Debug.Log(bAttack);
+                // 미사일에 맞으면 2초간 이동 불가
+                characterRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+                isMoveAble = false;
+                Invoke("moveAble", 2.0f);
+            }
         }
 
         if (collision.gameObject.CompareTag("ItemBox"))

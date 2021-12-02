@@ -13,6 +13,8 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     public static PhotonInit instance;
 
     public InputField playerInput;
+    public Button chattingBtn;
+
     bool isGameStart = false;
     bool isLoggIn = false;
     string playerName = "";
@@ -66,6 +68,8 @@ public class PhotonInit : MonoBehaviourPunCallbacks
 
         if(connectionInfoText)
             connectionInfoText.text = connectionState;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public static PhotonInit Instance
@@ -141,7 +145,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
    
 
     public override void OnJoinedRoom()
-    {
+    {       
         base.OnJoinedRoom();
         connectionState = "Joined Room";
         if (connectionInfoText)
@@ -167,6 +171,17 @@ public class PhotonInit : MonoBehaviourPunCallbacks
 
             if (GameObject.Find("Scroll View") != null)
                 scroll_rect = GameObject.Find("Scroll View").GetComponent<ScrollRect>();
+
+            // 플레이어 인풋 필드 대체
+            if (GameObject.Find("InFutFieldChat") != null)
+                playerInput = GameObject.Find("InFutFieldChat").GetComponent<InputField>();
+
+            if (GameObject.Find("ChattingButton") != null)
+            {
+                chattingBtn = GameObject.Find("ChattingButton").GetComponent<Button>();
+                chattingBtn.onClick.AddListener(SetPlayerName);
+            }
+
             StartCoroutine(CreatePlayer());
         }
     }
@@ -179,9 +194,10 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         }
 
         GameObject tempPlayer = PhotonNetwork.Instantiate("Player",
-                                    new Vector3(50, 1, 5),
+                                    new Vector3(0.5f, 1, -5),
                                     Quaternion.identity,
                                     0);
+        
         tempPlayer.GetComponent<PlayerCtrl>().SetPlayerName(playerName);
         pv = GetComponent<PhotonView>();
         yield return null;
@@ -355,7 +371,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         }
         else
         {
-            StartCoroutine("ShowPwWrongMsg");
+            StartCoroutine(ShowPwWrongMsg());
         }
     }
 

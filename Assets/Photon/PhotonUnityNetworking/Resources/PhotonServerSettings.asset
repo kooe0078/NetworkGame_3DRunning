@@ -44,6 +44,11 @@ MonoBehaviour:
   - useShieldRPC
   - useBoosterRPC
   - playerGetItemRPC
+  - GameStartButtonClicked
+  - GameStartButtonClickedRPC
+  - StartRPC
+  - SearchTargetRPC
+  - JumpRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

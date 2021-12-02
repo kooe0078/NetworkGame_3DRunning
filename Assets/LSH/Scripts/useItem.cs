@@ -8,7 +8,7 @@ public class useItem : MonoBehaviour
 {
     public GameObject Missile;
     public GameObject Shield;
-    public Transform MissileSpawnPos;
+    private Vector3 missileSpawnPos = new Vector3(0, 20, 0);
     public GameObject boosterEffect;
 
     public bool isPlayerGetItem = false;
@@ -67,6 +67,7 @@ public class useItem : MonoBehaviour
 
     public void useMssile()
     {
+        playerCtrl.bAttack = true;
         StartCoroutine(CreateMissile());
         // 미사일 사용 RPC 호출
         pv.RPC("useMissileRPC", RpcTarget.Others);
@@ -74,14 +75,18 @@ public class useItem : MonoBehaviour
 
     [PunRPC]
     void useMissileRPC()
-    {        
+    {
         StartCoroutine(CreateMissile());
     }
 
     IEnumerator CreateMissile()
     {
-        GameObject missile = Instantiate(Missile, MissileSpawnPos.position, MissileSpawnPos.rotation);
-        yield return null;
+        yield return new WaitForSeconds(0.5f);
+        // missileSpawnPos = new Vector3(missileSpawnPos.position.x, missileSpawnPos.position.y, missileSpawnPos.position.z - 10);
+        GameObject missile = Instantiate(Missile, missileSpawnPos, Quaternion.identity);
+        missile.GetComponent<missileCtrl>().bAttack = playerCtrl.bAttack;
+        yield return new WaitForSeconds(1.5f);
+        playerCtrl.bAttack = false;
     }
 
     void useShield()
