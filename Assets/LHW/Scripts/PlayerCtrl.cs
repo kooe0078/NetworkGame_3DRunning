@@ -47,6 +47,8 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
             GameObject.Find("CameraBase").GetComponent<CameraCtrl>().CameraFollowObj
                 = transform.Find("CamFollow").gameObject.transform;
         }
+
+        PhotonNetwork.NickName = name;
     }
 
     void Update()
