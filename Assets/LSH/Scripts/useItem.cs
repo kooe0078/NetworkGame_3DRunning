@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class useItem : MonoBehaviour
 {
@@ -18,12 +19,14 @@ public class useItem : MonoBehaviour
 
     // Æ÷Åæ ºä ¼±¾ð ¹× ¼³Á¤
     private PhotonView pv;
-
     private PlayerCtrl playerCtrl;
+    private Image itemImage;
+
     private void Start()
     {
         playerCtrl = gameObject.GetComponent<PlayerCtrl>();
         pv = GetComponent<PhotonView>();
+        itemImage = GameObject.Find("itemImage").GetComponent<Image>();
     }
 
     void Update()
@@ -128,6 +131,9 @@ public class useItem : MonoBehaviour
 
     void playerItemReset()
     {
+        Sprite sprite = Resources.Load("itemImage/Icon_X", typeof(Sprite)) as Sprite; 
+        itemImage.sprite = sprite;
+
         getMissile = false;
         getShield = false;
         getBooster = false;

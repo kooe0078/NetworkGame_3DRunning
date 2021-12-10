@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviourPun, IPunObservable
 {
@@ -29,8 +30,12 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     // æ∆¿Ã≈€ »πµÊ¿ª ¿ß«— ≥≠ºˆ º≥¡§
     float randomItemNum;
     useItem useItem;
+
     private InGameManager ingameManager;
     public bool bAttack = false;
+
+    private Image itemImage;
+
     void Start()
     {
         ingameManager = GameObject.Find("InGameManager").GetComponent<InGameManager>();
@@ -38,6 +43,7 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
         animator = GetComponent<Animator>();
         pv = GetComponent<PhotonView>();
         useItem = GetComponent<useItem>();
+        itemImage = GameObject.Find("itemImage").GetComponent<Image>();
 
         pv.ObservedComponents[0] = this;
         cameraTransform = GameObject.Find("Main Camera").transform;
@@ -167,6 +173,10 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
 
     void playerGetItem()
     {
+        Sprite MissileSprite = Resources.Load("itemImage/sprite_198", typeof(Sprite)) as Sprite;
+        Sprite BoosterSprite = Resources.Load("itemImage/sprite_325", typeof(Sprite)) as Sprite;
+        Sprite ShieldSprite = Resources.Load("itemImage/sprite_379", typeof(Sprite)) as Sprite;
+
         // «√∑π¿ÃæÓ∞° æ∆¿Ã≈€¿ª ∫∏¿Ø«œ¡ˆ æ æ“¿ª ∂ß∏∏ æ∆¿Ã≈€¿ª æÚ∞‘ «‘
         if (!useItem.isPlayerGetItem)
         {
@@ -175,20 +185,23 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
                 case 0:
                 case 1:
                 case 2:
-                    useItem.getBooster = true;
-                    Debug.Log("∫ŒΩ∫≈Õ »πµÊ");
-                    break;
                 case 3:
+                    useItem.getMissile = true;
+                    itemImage.sprite = MissileSprite;
+                    Debug.Log("πÃªÁ¿œ »πµÊ");
+                    break;                    
                 case 4:
                 case 5:
                 case 6:
-                    useItem.getMissile = true;
-                    Debug.Log("πÃªÁ¿œ »πµÊ");
+                    useItem.getBooster = true;
+                    itemImage.sprite = BoosterSprite;
+                    Debug.Log("∫ŒΩ∫≈Õ »πµÊ");
                     break;
                 case 7:
                 case 8:
                 case 9:
                     useItem.getShield = true;
+                    itemImage.sprite = ShieldSprite;
                     Debug.Log("ΩØµÂ »πµÊ");
                     break;
                 default:

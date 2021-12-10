@@ -30,6 +30,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     public GameObject LobbyPanel;
     public GameObject MakeRoomPanel;
     public GameObject RoomPanel;
+    public InputField RoomNumberInput;
     public InputField RoomInput;
     public InputField RoomPwInput;
     public Toggle PwToggle;
@@ -45,6 +46,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     public Button NextBtn;
     public Button CreateRoomBtn;
     public int hashtablecount;
+    public GameObject FadeInOutPrefab;
 
     List<RoomInfo> myList = new List<RoomInfo>();
     int currentPage = 1, maxPage, multiple, roomnumber;
@@ -145,7 +147,18 @@ public class PhotonInit : MonoBehaviourPunCallbacks
    
 
     public override void OnJoinedRoom()
-    {       
+    {
+        GameObject fadeInOutObj = Instantiate(FadeInOutPrefab);
+        fadeInOutObj.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        fadeInOutObj.GetComponent<FadeInOut>().bFadeOut = true;
+        fadeInOutObj.GetComponent<FadeInOut>().bFadeOutEndFadeIn = true;
+        fadeInOutObj.GetComponent<FadeInOut>().FadeInOutChange();
+        StartCoroutine(JoinRoom());
+    }
+
+    IEnumerator JoinRoom()
+    {
+        yield return new WaitForSeconds(2.0f);
         base.OnJoinedRoom();
         connectionState = "Joined Room";
         if (connectionInfoText)
@@ -155,9 +168,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         PlayerPrefs.SetInt("LogIn", 1);
 
         PhotonNetwork.LoadLevel("Map_2");
-
     }
-
     private void Update()
     {
         if (PlayerPrefs.GetInt("LogIn") == 1)
@@ -276,7 +287,9 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     public void CreateNewRoom()
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 80;
+
+        int roomMaxNumber = int.Parse(RoomNumberInput.text.ToString());
+        roomOptions.MaxPlayers = System.Convert.ToByte(roomMaxNumber);
         roomOptions.CustomRoomProperties = new Hashtable()
         {
             { "password", RoomPwInput.text }
@@ -285,13 +298,12 @@ public class PhotonInit : MonoBehaviourPunCallbacks
 
         if (PwToggle.isOn)
         {
-            PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Game" + Random.Range(0, 100) : "*" + RoomInput.text, roomOptions);
+            PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Game" + Random.Range(0, 100) : RoomInput.text, roomOptions);
         }
         else
         {
-            PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Game" + Random.Range(0, 100) : "*" + RoomInput.text, new RoomOptions { MaxPlayers = 100 });
+            PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Game" + Random.Range(0, 100) : RoomInput.text, new RoomOptions { MaxPlayers = 100 });
         }
-
         MakeRoomPanel.SetActive(false);
     }
 
@@ -398,10 +410,16 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         multiple = (currentPage - 1) * CellBtn.Length;
         for (int i = 0; i < CellBtn.Length; i++)
         {
-
-            CellBtn[i].interactable = (multiple + i < myList.Count) ? true : false;
+            CellBtn[i].interactable = (multiple + i < myList.Count) ? true : false;           
             CellBtn[i].transform.GetChild(0).GetComponent<Text>().text = (multiple + i < myList.Count) ? myList[multiple + i].Name : "";
             CellBtn[i].transform.GetChild(1).GetComponent<Text>().text = (multiple + i < myList.Count) ? myList[multiple + i].PlayerCount + "/" + myList[multiple + i].MaxPlayers : "";
+            CellBtn[i].transform.GetChild(3).gameObject.SetActive((multiple + i < myList.Count) ? true : false);
+
+            if((int)((multiple + i < myList.Count) ? myList[multiple + i].CustomProperties.Count : 0) != 0)
+            {
+                CellBtn[i].transform.GetChild(2).gameObject.SetActive((multiple + i < myList.Count) ? true : false);
+            }
+            
         }
 
     }
