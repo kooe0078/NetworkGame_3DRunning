@@ -17,7 +17,7 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     private Animator animator;
     // 플레이어가 점프중인지 아닌지 확인하는 bool 변수
     private bool bJumping = false;
-    // 플레이어가 미사일에 맞을 경우 이동을 제한하는 bool 변수
+    // 플레이어의 이동을 제한하는 bool 변수
     private bool isMoveAble = true;
     // 포톤 뷰 선언 및 설정
     private PhotonView pv;
@@ -43,13 +43,14 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
         animator = GetComponent<Animator>();
         pv = GetComponent<PhotonView>();
         useItem = GetComponent<useItem>();
-        itemImage = GameObject.Find("itemImage").GetComponent<Image>();
+        itemImage = GameObject.Find("Canvas").transform.Find("itemPanel").transform.Find("itemImage").GetComponent<Image>();
 
         pv.ObservedComponents[0] = this;
         cameraTransform = GameObject.Find("Main Camera").transform;
 
         if (pv.IsMine)
         {
+            ingameManager.GetPlayerName(name);
             GameObject.Find("CameraBase").GetComponent<CameraCtrl>().CameraFollowObj
                 = transform.Find("CamFollow").gameObject.transform;
         }
@@ -131,6 +132,7 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
                 Debug.Log(bAttack);
                 // 미사일에 맞으면 2초간 이동 불가
                 characterRigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+                animator.SetBool("IsHit", true);
                 isMoveAble = false;
                 Invoke("moveAble", 2.0f);
             }
@@ -147,6 +149,7 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
     {
         // 이동 불가 해제
         isMoveAble = true;
+        animator.SetBool("IsHit", false);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -167,7 +170,7 @@ public class PlayerCtrl : MonoBehaviourPun, IPunObservable
 
     public void SetPlayerName(string name)
     {
-        this.name = name;
+        this.name = name;   
         GetComponent<PlayerCtrl>().playerName.text = this.name;
     }
 

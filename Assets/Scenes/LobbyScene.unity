@@ -1329,8 +1329,7 @@ MonoBehaviour:
   NextBtn: {fileID: 1671204074}
   CreateRoomBtn: {fileID: 627615021}
   hashtablecount: 0
-  FadeInOutPrefab: {fileID: 4380512457220982809, guid: 71d67585ace93c940a9d3ab1033ab9b8,
-    type: 3}
+  FadeInOutPrefab: {fileID: 4380512457220982809, guid: 71d67585ace93c940a9d3ab1033ab9b8, type: 3}
 --- !u!4 &415822372
 Transform:
   m_ObjectHideFlags: 0
@@ -2747,7 +2746,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: [{fileID: 158272599}]
+  m_Children:
+  - {fileID: 158272599}
   m_Father: {fileID: 407521179}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2799,11 +2799,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 921550942}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: [{m_Target: {fileID: 415822371}, m_TargetAssemblyTypeName: 'PhotonInit,
-            Assembly-CSharp', m_MethodName: EnterRoomWithPW, m_Mode: 1, m_Arguments: {
-            m_ObjectArgument: {fileID: 0}, m_ObjectArgumentAssemblyTypeName: 'UnityEngine.Object,
-              UnityEngine', m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: '',
-            m_BoolArgument: 0}, m_CallState: 2}]
+      m_Calls:
+      - m_Target: {fileID: 415822371}
+        m_TargetAssemblyTypeName: PhotonInit, Assembly-CSharp
+        m_MethodName: EnterRoomWithPW
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &921550942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4824,15 +4832,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1462274769}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: [{m_Target: {fileID: 415822370}, m_TargetAssemblyTypeName: 'UnityEngine.GameObject,
-            UnityEngine', m_MethodName: SetActive, m_Mode: 6, m_Arguments: {m_ObjectArgument: {
-              fileID: 0}, m_ObjectArgumentAssemblyTypeName: 'UnityEngine.Object, UnityEngine',
-            m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: '', m_BoolArgument: 0},
-          m_CallState: 2}, {m_Target: {fileID: 407521178}, m_TargetAssemblyTypeName: 'UnityEngine.GameObject,
-            UnityEngine', m_MethodName: SetActive, m_Mode: 6, m_Arguments: {m_ObjectArgument: {
-              fileID: 0}, m_ObjectArgumentAssemblyTypeName: 'UnityEngine.Object, UnityEngine',
-            m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: '', m_BoolArgument: 0},
-          m_CallState: 2}]
+      m_Calls:
+      - m_Target: {fileID: 415822370}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 407521178}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1462274769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6466,8 +6490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IntroPanel: {fileID: 258610995}
-  FadeInOutPanelPrefab: {fileID: 4380512457220982809, guid: 71d67585ace93c940a9d3ab1033ab9b8,
-    type: 3}
+  FadeInOutPanelPrefab: {fileID: 4380512457220982809, guid: 71d67585ace93c940a9d3ab1033ab9b8, type: 3}
   canvas: {fileID: 2111377874}
 --- !u!4 &1917363707
 Transform:

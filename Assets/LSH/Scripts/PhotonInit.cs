@@ -19,9 +19,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     bool isLoggIn = false;
     string playerName = "";
     string connectionState = "";
-    public string chatMessage ;
-    Text chatText;
-    ScrollRect scroll_rect = null;
+
     PhotonView pv;
 
     Text connectionInfoText;
@@ -45,6 +43,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     public Button PreviousBtn;
     public Button NextBtn;
     public Button CreateRoomBtn;
+
     public int hashtablecount;
     public GameObject FadeInOutPrefab;
 
@@ -56,12 +55,9 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         PhotonNetwork.GameVersion = "MyFps 1.0";
         PhotonNetwork.ConnectUsingSettings();
 
-        // 이제 2개의 씬에서 로딩이 되기때문에 UI 처리를 해보자
-        if(GameObject.Find("ChatText") != null)
-            chatText = GameObject.Find("ChatText").GetComponent<Text>();
-
-        if (GameObject.Find("Scroll View") != null)
-            scroll_rect = GameObject.Find("Scroll View").GetComponent<ScrollRect>();
+        //// 이제 2개의 씬에서 로딩이 되기때문에 UI 처리를 해보자
+        //if(GameObject.Find("ChatText") != null)
+        //    chatText = GameObject.Find("ChatText").GetComponent<Text>();
 
         if (GameObject.Find("ConnectionInfoText") != null)
             connectionInfoText = GameObject.Find("ConnectionInfoText").GetComponent<Text>();
@@ -147,18 +143,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
    
 
     public override void OnJoinedRoom()
-    {
-        GameObject fadeInOutObj = Instantiate(FadeInOutPrefab);
-        fadeInOutObj.transform.SetParent(GameObject.Find("Canvas").transform, false);
-        fadeInOutObj.GetComponent<FadeInOut>().bFadeOut = true;
-        fadeInOutObj.GetComponent<FadeInOut>().bFadeOutEndFadeIn = true;
-        fadeInOutObj.GetComponent<FadeInOut>().FadeInOutChange();
-        StartCoroutine(JoinRoom());
-    }
-
-    IEnumerator JoinRoom()
-    {
-        yield return new WaitForSeconds(2.0f);
+    {     
         base.OnJoinedRoom();
         connectionState = "Joined Room";
         if (connectionInfoText)
@@ -169,6 +154,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LoadLevel("Map_2");
     }
+
     private void Update()
     {
         if (PlayerPrefs.GetInt("LogIn") == 1)
@@ -177,11 +163,8 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         if (isGameStart == false && SceneManager.GetActiveScene().name == "Map_2" && isLoggIn == true)
         {
             isGameStart = true;
-            if (GameObject.Find("ChatText") != null)
-                chatText = GameObject.Find("ChatText").GetComponent<Text>();
-
-            if (GameObject.Find("Scroll View") != null)
-                scroll_rect = GameObject.Find("Scroll View").GetComponent<ScrollRect>();
+            //if (GameObject.Find("ChatText") != null)
+            //    chatText = GameObject.Find("ChatText").GetComponent<Text>();
 
             // 플레이어 인풋 필드 대체
             if (GameObject.Find("InFutFieldChat") != null)
@@ -230,26 +213,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
             Debug.Log("connect 시도!" + isGameStart + ", " + isLoggIn);
             Connect();
             
-        }
-        else
-        {
-            chatMessage = playerInput.text;
-            playerInput.text = string.Empty;
-            pv.RPC("ChatInfo", RpcTarget.All, chatMessage);
-        }
-        
-    }
-
-    public void ShowChat(string chat)
-    {
-        chatText.text += chat + "\n";
-        scroll_rect.verticalNormalizedPosition = 0.0f;
-    }
-
-    [PunRPC]
-    public void ChatInfo(string sChat)
-    {
-        ShowChat(sChat);
+        }     
     }
 
     #region 로비 생성 UI 관련 함수들
@@ -302,7 +266,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         }
         else
         {
-            PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Game" + Random.Range(0, 100) : RoomInput.text, new RoomOptions { MaxPlayers = 100 });
+            PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Game" + Random.Range(0, 100) : RoomInput.text, new RoomOptions { MaxPlayers = System.Convert.ToByte(roomMaxNumber) });
         }
         MakeRoomPanel.SetActive(false);
     }
@@ -350,7 +314,6 @@ public class PhotonInit : MonoBehaviourPunCallbacks
             MyListRenewal();
         }
     }
-
     public void RoomPw(int num)
     {
         switch (num)

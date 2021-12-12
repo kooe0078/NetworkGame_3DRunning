@@ -26,33 +26,22 @@ public class useItem : MonoBehaviour
     {
         playerCtrl = gameObject.GetComponent<PlayerCtrl>();
         pv = GetComponent<PhotonView>();
-        itemImage = GameObject.Find("itemImage").GetComponent<Image>();
+        itemImage = GameObject.Find("Canvas").transform.Find("itemPanel").transform.Find("itemImage").GetComponent<Image>();
     }
 
     void Update()
     {
-        if (isPlayerGetItem)
+        // 아이템을 보유중이면 마우스 좌클릭으로 사용
+        if (isPlayerGetItem && Input.GetButtonDown("Fire1"))
         {
-            // 마우스 좌클릭으로 미사일 발사
-            if (getMissile && Input.GetButtonDown("Fire1"))
-            {
+            if (getMissile)
                 useMssile();
-                playerItemReset();
-            }
-            // 마우스 우클릭으로 쉴드 생성
-            if (getShield && Input.GetButtonDown("Fire2"))
-            {
-                Debug.Log("쉴드 사용1");
+            else if (getShield)
                 useShield();
-                playerItemReset();
-            }
-            // 마우스 휠 클릭시 부스터
-            if (getBooster && Input.GetButtonDown("Fire3"))
-            {
-                Debug.Log("부스터 사용1");
+            else if (getBooster)
                 useBooster();
-                playerItemReset();
-            }
+
+            playerItemReset();
         }
     }
 
@@ -95,7 +84,6 @@ public class useItem : MonoBehaviour
 
     IEnumerator CreateShield()
     {
-        Debug.Log("쉴드 사용2");
         // 쉴드 생성 후 2초 뒤 제거
         Shield.SetActive(true);
         yield return new WaitForSeconds(2.0f);
@@ -117,7 +105,6 @@ public class useItem : MonoBehaviour
 
     IEnumerator CreateBooster()
     {
-        Debug.Log("부스터 사용2");
         playerCtrl.maxSpeed *= 2.0f;
         //부스터 사용 이펙트 생성
         var boosterInstance = Instantiate(boosterEffect, transform.position, transform.rotation);
