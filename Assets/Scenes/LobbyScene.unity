@@ -1304,7 +1304,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 1133165609}
   chattingBtn: {fileID: 0}
-  chatMessage: 
   LobbyCanvas: {fileID: 2111377874}
   LobbyPanel: {fileID: 1591916640}
   MakeRoomPanel: {fileID: 1369608515}

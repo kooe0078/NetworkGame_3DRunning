@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class raceFinishCount : MonoBehaviour
 {
     private PhotonView pv;
-    public Text countText;
+    public GameObject countText;
     List<string> playerList;
     bool firstPlayer = true;
-
+    private Animator animator;
     public GameObject leaderBoard;
     public GameObject rowPrefab;
     public Transform rowsParent;
@@ -57,17 +57,27 @@ public class raceFinishCount : MonoBehaviour
     IEnumerator FinishCountdown()
     {
         int timer = 10;
-        countText.gameObject.SetActive(true);
         while (timer != -1)
         {
+            GameObject cntObj = Instantiate(countText);
+            cntObj.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            animator = cntObj.GetComponent<Animator>();
             if (timer > 0)
-                countText.text = timer.ToString();
+            {
+                cntObj.GetComponent<Text>().text = timer.ToString();
+                animator.SetBool("TimerEnd", false);
+            }
+               
             else
-                countText.text = "Time Up!";
+            {
+                cntObj.GetComponent<Text>().text = "Time Up!";
+                animator.SetBool("TimerEnd", true);
+            }
+               
             timer--;
             yield return new WaitForSeconds(1.0f);
+            Destroy(cntObj);
         }
-        countText.gameObject.SetActive(false);
 
         LeaderBoard();
     }
