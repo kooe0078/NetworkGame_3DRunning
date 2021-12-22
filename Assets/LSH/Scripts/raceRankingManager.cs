@@ -14,6 +14,7 @@ public class raceRankingManager : MonoBehaviour
     private InGameManager inGameManager;
     private Text currentRankText;
     private Text maxPlayerText;
+    private Animator animator;
 
     bool setTrigger = true;
 
@@ -23,6 +24,7 @@ public class raceRankingManager : MonoBehaviour
         finishLine = GameObject.Find("FinishLine");
         finishLinePosition = finishLine.transform.position;
         pv = GetComponent<PhotonView>();
+        animator = GetComponent<Animator>();
 
         inGameManager = GameObject.Find("InGameManager").GetComponent<InGameManager>();
         currentRankText = GameObject.Find("Canvas").transform.Find("rankingPanel").transform.Find("currentRankingText").GetComponent<Text>();
@@ -45,7 +47,6 @@ public class raceRankingManager : MonoBehaviour
         //pv.RPC("rankCalculRPC", RpcTarget.Others);
     }
 
-    [PunRPC]
     IEnumerator currentRank()
     {
         if (pv.IsMine && inGameManager.bCount)
@@ -79,7 +80,7 @@ public class raceRankingManager : MonoBehaviour
             }
             if (!setTrigger && (maxPlayer - numberOfBackPlayer) != 1)
             {
-                setTrigger = true;
+                setTrigger = true;                
             }
             //Debug.Log("현재 등수: " + (maxPlayer - numberOfBackPlayer));
 
@@ -95,5 +96,6 @@ public class raceRankingManager : MonoBehaviour
     public void passingPlayerRPC()
     {
         Debug.Log("추월하는 애니메이션 트리거");
+        animator.SetTrigger("IsPassing");
     }
 }

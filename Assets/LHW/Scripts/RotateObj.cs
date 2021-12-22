@@ -6,11 +6,8 @@ public class RotateObj : MonoBehaviour
 {
     public float rotSpeed = 100.0f;
 
-    private GameObject Player;
-
     void Start()
     {
-        Player = GameObject.FindWithTag("Player");
     }
     // Update is called once per frame
     void Update()
@@ -21,14 +18,14 @@ public class RotateObj : MonoBehaviour
     {      
         if (collision.gameObject.tag == "Player")
         {
-            Player.transform.parent = transform;
+            collision.gameObject.transform.parent = transform;
         }     
     }
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            Player.transform.parent = null;
+            collision.gameObject.transform.parent = null;
         }
     }
 }

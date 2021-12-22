@@ -123,7 +123,10 @@ public class InGameManager : MonoBehaviour
         playerName = name;
     }
     IEnumerator CountDown()
-    {
+    {           
+        //커서 비활성화
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         ReadyCnt.gameObject.SetActive(false);
         ChattingButton.gameObject.SetActive(false);
         PlayerChatting.gameObject.SetActive(false);

@@ -95,7 +95,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.516403, y: 0.15282443, z: 3.1773162}
+  m_Size: {x: 1.7, y: 0.8, z: 3}
   m_Center: {x: 0.03095606, y: 0.0000000037252903, z: -0.34427947}
 --- !u!1 &1130622484746396965
 GameObject:
@@ -239,4 +239,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xRotLimit: 70
   moveSpeed: 1
-  delayTime: 0.2
+  minMoveSpeed: 2
+  maxMoveSpeed: 3

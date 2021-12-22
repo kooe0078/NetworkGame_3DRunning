@@ -21,10 +21,7 @@ public class CameraCtrl : MonoBehaviour
     {
         Vector3 rot = transform.localRotation.eulerAngles;
         rotY = rot.y;
-        rotX = rot.x;
-        //커서 비활성화
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;  
+        rotX = rot.x; 
     }
 
     void LateUpdate()

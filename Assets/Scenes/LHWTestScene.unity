@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &37053867 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 162854317214065020, guid: adfed511c18692241997ecf2532ca278, type: 3}
-  m_PrefabInstance: {fileID: 2188944788744441949}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &39251167
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +326,7 @@ Transform:
   m_LocalScale: {x: 3, y: 0.5, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &381259159
 GameObject:
@@ -551,7 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraMoveSpeed: 120
-  CameraFollowObj: {fileID: 37053867}
+  CameraFollowObj: {fileID: 972242911}
   clampAngle: 20
   InputSensitivity: 2
   finalInputX: 0
@@ -876,6 +871,11 @@ Transform:
   m_Father: {fileID: 1385057500}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &972242911 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2331375772751971243, guid: adfed511c18692241997ecf2532ca278, type: 3}
+  m_PrefabInstance: {fileID: 2188944788744441949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1197862009
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,7 +1116,7 @@ Transform:
   m_Children:
   - {fileID: 1729110251}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1729110250
 GameObject:
@@ -1229,7 +1229,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xRotLimit: 70
   moveSpeed: 1
-  delayTime: 0.2
+  minMoveSpeed: 2
+  maxMoveSpeed: 3
 --- !u!1001 &1130622484534292584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1361,6 +1362,14 @@ PrefabInstance:
     - target: {fileID: 6564565448838173677, guid: adfed511c18692241997ecf2532ca278, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7189665776730945326, guid: adfed511c18692241997ecf2532ca278, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 28.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 7458572356482099277, guid: adfed511c18692241997ecf2532ca278, type: 3}
+      propertyPath: sceneViewId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7872675492415644158, guid: adfed511c18692241997ecf2532ca278, type: 3}
       propertyPath: m_Name
@@ -1495,7 +1504,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3750551468668163089, guid: aba919f9ec5eb4b4d819e2668d0a6fcd, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3750551468668163089, guid: aba919f9ec5eb4b4d819e2668d0a6fcd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1560,7 +1569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7544867677074037337, guid: 17681f53db8e2884f8f31dd4f4a8d1c1, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7544867677074037337, guid: 17681f53db8e2884f8f31dd4f4a8d1c1, type: 3}
       propertyPath: m_LocalPosition.x
